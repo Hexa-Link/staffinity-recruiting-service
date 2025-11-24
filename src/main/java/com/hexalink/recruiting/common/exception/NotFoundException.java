@@ -1,4 +1,4 @@
-package com.hexalink.recruiting.vacancies.domain.exception;
+package com.hexalink.recruiting.common.exception;
 
 /**
  * Domain exception thrown when a requested resource is not found.
