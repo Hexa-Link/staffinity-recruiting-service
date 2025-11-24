@@ -4,7 +4,7 @@
 
 # --- Base Configuration (applies to all profiles) ---
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8080}
   servlet:
     context-path: /api/recruiting
   error:
@@ -44,15 +44,15 @@ management:
   endpoint:
     health:
       show-details: when-authorized
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
 
 # External Services Configuration
 external-services:
   personal-service:
-    url: ${PERSONAL_SERVICE_URL:http://localhost:8080/api/personal}
+    url: ${PERSONAL_SERVICE_URL}
     timeout: ${PERSONAL_SERVICE_TIMEOUT:5000}
     circuit-breaker:
       failure-rate-threshold: 50
@@ -61,8 +61,8 @@ external-services:
 
 # JWT Configuration (for Phase 2, but defined now)
 jwt:
-  secret: ${JWT_SECRET:default-secret-key-change-in-production}
-  expiration: ${JWT_EXPIRATION:86400000}  # 24 hours in milliseconds
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
 
 # Logging Configuration
 logging:
@@ -92,9 +92,9 @@ spring:
     activate:
       on-profile: "local"
   datasource:
-    url: jdbc:postgresql://localhost:${DB_PORT:5432}/${DB_NAME:hexalink_recruiting}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:${DB_PORT:5432}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -115,9 +115,9 @@ spring:
     activate:
       on-profile: "docker"
   datasource:
-    url: jdbc:postgresql://postgres-recruiting:5432/${DB_NAME:hexalink_recruiting}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:postgresql://postgres-recruiting:5432/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -126,7 +126,7 @@ spring:
 # Adjust external service URL for docker network
 external-services:
   personal-service:
-    url: http://personal-service:8080/api/personal
+    url: ${PERSONAL_SERVICE_URL_DOCKER}
 
 ---
 # =============================================================================
