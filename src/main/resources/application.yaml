@@ -15,7 +15,7 @@ spring:
   profiles:
     active: ${ACTIVE_PROFILE:local}
   application:
-    name: hexalink-recruiting-service
+    name: staffinity-recruiting-service
 
   # JPA Configuration
   jpa:
@@ -59,7 +59,7 @@ external-services:
       wait-duration-in-open-state: 10000
       sliding-window-size: 10
 
-# JWT Configuration (for Phase 2, but defined now)
+# JWT Configuration
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
