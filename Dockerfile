@@ -1,30 +1,36 @@
-# Stage 1: Build with Maven and JDK 17
-FROM maven:3.9.0-eclipse-temurin-17 AS build
+# --- Stage 1: Build Stage ---
+# Use an official Gradle image with a compatible JDK
+FROM gradle:8.5-jdk17-alpine AS build
 
+# Set the working directory
 WORKDIR /app
 
-# Copy pom.xml to leverage dependency cache
-COPY pom.xml .
+# Copy the build.gradle.kts and settings.gradle.kts to leverage Docker layer caching
+COPY build.gradle.kts settings.gradle.kts ./
 
-# Download dependencies to cache them
-RUN mvn dependency:go-offline
+# Download dependencies
+# The --build-cache is a Gradle optimization
+RUN gradle --build-cache build -x test
 
-# Copy source code
-COPY src ./src
+# Copy the rest of the source code
+COPY . .
 
-# Build the package (skip tests to speed up)
-RUN mvn clean package -DskipTests
+# Build the application, skipping tests as they should run in a CI pipeline
+RUN gradle build -x test
 
-# Stage 2: Final image with Temurin 17 JRE Alpine (lighter)
+# --- Stage 2: Final Image Stage ---
+# Use a lightweight JRE image for a smaller final image size
 FROM eclipse-temurin:17-jre-alpine
 
+# Set the working directory
 WORKDIR /app
 
-# Copy the built jar from the build stage
-COPY --from=build /app/target/*.jar app.jar
+# Copy the executable .jar file from the build stage
+# The path will be inside build/libs/
+COPY --from=build /app/build/libs/*.jar app.jar
 
-# Expose port 8080 (default for Spring Boot)
-EXPOSE 8080
+# Expose the port the application will run on
+EXPOSE 080
 
-# Command to run the application
+# The command to run the application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
