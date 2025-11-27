@@ -1,7 +1,10 @@
 package com.staffinity.recruiting.candidates.domain.exception;
 
-// Placeholder for CandidateNotFoundException
-public class CandidateNotFoundException extends RuntimeException {
-    // TODO: Implement exception logic
+import com.staffinity.recruiting.common.exception.NotFoundException;
+
+public class CandidateNotFoundException extends NotFoundException {
+    public CandidateNotFoundException(String message) {
+        super(message);
+    }
 }
 

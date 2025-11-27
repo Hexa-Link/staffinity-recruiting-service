@@ -1,7 +1,9 @@
 package com.staffinity.recruiting.candidates.application.usecases;
 
-// Placeholder for ListCandidatesUseCase
-public class ListCandidatesUseCase {
-    // TODO: Implement use case logic
+import com.staffinity.recruiting.candidates.domain.model.Candidate;
+import java.util.List;
+
+public interface ListCandidatesUseCase {
+    List<Candidate> listCandidates();
 }
 

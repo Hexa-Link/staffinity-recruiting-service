@@ -7,3 +7,4 @@ public interface VacancyRepositoryPort {
     Vacancy save(Vacancy vacancy);
     List<Vacancy> findAll();
 }
+

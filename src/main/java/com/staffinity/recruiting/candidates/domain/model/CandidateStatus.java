@@ -1,7 +1,13 @@
 package com.staffinity.recruiting.candidates.domain.model;
 
-// Placeholder for CandidateStatus enum
 public enum CandidateStatus {
-    // TODO: Define statuses
+    APPLIED,
+    SCREENING,
+    INTERVIEW_HR,
+    INTERVIEW_TECH,
+    OFFER,
+    HIRED,
+    REJECTED,
+    WITHDRAWN
 }
 

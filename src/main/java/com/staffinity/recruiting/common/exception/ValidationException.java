@@ -1,7 +1,15 @@
 package com.staffinity.recruiting.common.exception;
 
-// Placeholder for ValidationException
+/**
+ * Exception thrown when validation fails.
+ */
 public class ValidationException extends RuntimeException {
-    // TODO: Implement validation exception logic
+    public ValidationException(String message) {
+        super(message);
+    }
+
+    public ValidationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
 

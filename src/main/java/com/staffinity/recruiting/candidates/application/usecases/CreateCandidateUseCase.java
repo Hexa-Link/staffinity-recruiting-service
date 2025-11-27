@@ -1,7 +1,11 @@
 package com.staffinity.recruiting.candidates.application.usecases;
 
-// Placeholder for CreateCandidateUseCase
-public class CreateCandidateUseCase {
-    // TODO: Implement use case logic
+import com.staffinity.recruiting.candidates.domain.model.Candidate;
+import com.staffinity.recruiting.candidates.application.dto.CandidateRequest;
+
+public interface CreateCandidateUseCase {
+    Candidate createCandidate(CandidateRequest request);
 }
+
+
 
