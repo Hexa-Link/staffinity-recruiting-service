@@ -1,7 +1,18 @@
 package com.staffinity.recruiting.candidates.application.dto;
 
-// Placeholder for CandidateRequest DTO
+import java.util.UUID;
+
 public class CandidateRequest {
-    // TODO: Define fields
+    public UUID vacancyId;
+    public String firstName;
+    public String lastName;
+    public String email;
+    public String phoneNumber;
+    public String resumeUrl;
+    public String linkedinUrl;
+    public String portfolioUrl;
+    public String applicationStatus;
+    public String source;
+    public String rejectionReason;
 }
 

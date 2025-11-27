@@ -1,5 +1,24 @@
 package com.staffinity.recruiting.vacancies.infrastructure.web.mapper;
 
-public class VacancyMapper {
+import com.staffinity.recruiting.vacancies.application.dto.CreateVacancyRequest;
+import com.staffinity.recruiting.vacancies.application.dto.VacancyResponse;
+import com.staffinity.recruiting.vacancies.domain.model.Vacancy;
+import com.staffinity.recruiting.vacancies.infrastructure.persistence.VacancyEntity;
+import org.mapstruct.*;
 
+import java.util.List;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface VacancyMapper {
+
+    Vacancy toDomain(VacancyEntity entity);
+
+    VacancyEntity toEntity(Vacancy domain);
+
+    @Mapping(target = "id", ignore = true)
+    Vacancy fromRequest(CreateVacancyRequest request);
+
+    VacancyResponse toResponse(Vacancy domain);
+
+    List<VacancyResponse> toResponseList(List<Vacancy> vacancies);
 }

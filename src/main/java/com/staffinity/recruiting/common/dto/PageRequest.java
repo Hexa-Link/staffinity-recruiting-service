@@ -1,7 +1,15 @@
 package com.staffinity.recruiting.common.dto;
 
-// Placeholder for PageRequest DTO
+import lombok.NoArgsConstructor;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor @NoArgsConstructor @Data
 public class PageRequest {
-    // TODO: Define fields
+    private String sortDirection = "ASC";
+    private String sortBy;
+    private int size = 20;
+    private int page = 0;
 }
+
 

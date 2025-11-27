@@ -9,7 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "vacancies")
@@ -20,8 +21,14 @@ import java.time.LocalDateTime;
 public class VacancyEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @Column(name = "hiring_manager_id")
+    private UUID hiringManagerId;
+
+    @Column(name = "recruiter_id")
+    private UUID recruiterId;
 
     @Column(nullable = false)
     private String title;
@@ -29,16 +36,38 @@ public class VacancyEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
-    private String status; // Map to the enum in the domain model
+    @Column(columnDefinition = "TEXT")
+    private String requirements;
 
-    private BigDecimal salary;
+    @Column
+    private String location;
+
+    @Column(name = "remote_allowed")
+    private boolean remoteAllowed;
+
+    @Column
+    private String seniority;
+
+    @Column(nullable = false)
+    private String status;
+
+    @Column(name = "salary_min")
+    private BigDecimal salaryMin;
+
+    @Column(name = "salary_max")
+    private BigDecimal salaryMax;
+
+    @Column
+    private String currency;
+
+    @Column(name = "closed_at")
+    private Instant closedAt;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 }
