@@ -1,7 +1,7 @@
 package com.staffinity.recruiting.candidates.infrastructure.adapters;
 
 import com.staffinity.recruiting.candidates.domain.model.Candidate;
-import com.staffinity.recruiting.candidates.domain.ports.CandidateRepositoryPort;
+import com.staffinity.recruiting.candidates.domain.ports.out.CandidateRepositoryPort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
