@@ -52,6 +52,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly 'com.h2database:h2'
 }
 
 dependencyManagement {
@@ -62,4 +63,11 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	testLogging {
+		events "FAILED", "SKIPPED"
+		exceptionFormat "FULL"
+		showExceptions true
+		showCauses true
+		showStackTraces true
+	}
 }
