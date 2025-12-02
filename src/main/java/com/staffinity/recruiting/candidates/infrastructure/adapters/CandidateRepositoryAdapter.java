@@ -2,6 +2,9 @@ package com.staffinity.recruiting.candidates.infrastructure.adapters;
 
 import com.staffinity.recruiting.candidates.domain.model.Candidate;
 import com.staffinity.recruiting.candidates.domain.ports.out.CandidateRepositoryPort;
+import com.staffinity.recruiting.candidates.infrastructure.persistence.JpaCandidateRepository;
+import com.staffinity.recruiting.candidates.infrastructure.persistence.CandidateEntity;
+import com.staffinity.recruiting.candidates.infrastructure.web.mapper.CandidateMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,30 +13,35 @@ import java.util.UUID;
 
 @Component
 public class CandidateRepositoryAdapter implements CandidateRepositoryPort {
-    
-    // TODO: Inject JpaCandidateRepository and CandidateMapper
+
+    private final JpaCandidateRepository jpaCandidateRepository;
+    private final CandidateMapper candidateMapper;
+
+    public CandidateRepositoryAdapter(JpaCandidateRepository jpaCandidateRepository, CandidateMapper candidateMapper) {
+        this.jpaCandidateRepository = jpaCandidateRepository;
+        this.candidateMapper = candidateMapper;
+    }
 
     @Override
     public Candidate save(Candidate candidate) {
-        // TODO: Implement
-        return null;
+        CandidateEntity entity = candidateMapper.toEntity(candidate);
+        CandidateEntity savedEntity = jpaCandidateRepository.save(entity);
+        return candidateMapper.toDomain(savedEntity);
     }
 
     @Override
     public Optional<Candidate> findById(UUID id) {
-        // TODO: Implement
-        return Optional.empty();
+        return jpaCandidateRepository.findById(id)
+                .map(candidateMapper::toDomain);
     }
 
     @Override
     public List<Candidate> findAll() {
-        // TODO: Implement
-        return List.of();
+        return candidateMapper.toDomainList(jpaCandidateRepository.findAll());
     }
 
     @Override
     public void deleteById(UUID id) {
-        // TODO: Implement
+        jpaCandidateRepository.deleteById(id);
     }
 }
-

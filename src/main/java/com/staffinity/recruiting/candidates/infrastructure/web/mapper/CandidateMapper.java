@@ -21,5 +21,7 @@ public interface CandidateMapper {
     CandidateResponse toResponse(Candidate domain);
 
     List<CandidateResponse> toResponseList(List<Candidate> candidates);
+
+    List<Candidate> toDomainList(List<CandidateEntity> candidates);
 }
 
