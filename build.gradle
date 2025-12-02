@@ -27,6 +27,7 @@ repositories {
 ext {
 	set('springCloudVersion', "2025.0.0")
 	set('mapstructVersion', "1.5.5.Final")
+    set('openApiVersion', "2.8.11")
 }
 
 dependencies {
@@ -41,6 +42,8 @@ dependencies {
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiVersion}"
+	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openApiVersion}"
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
