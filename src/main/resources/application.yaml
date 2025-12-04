@@ -52,7 +52,7 @@ management:
 # External Services Configuration
 external-services:
   personal-service:
-    url: ${PERSONAL_SERVICE_URL}
+    url: ${PERSONAL_SERVICE_URL:}
     timeout: ${PERSONAL_SERVICE_TIMEOUT:5000}
     circuit-breaker:
       failure-rate-threshold: 50
@@ -126,7 +126,7 @@ spring:
 # Adjust external service URL for docker network
 external-services:
   personal-service:
-    url: ${PERSONAL_SERVICE_URL_DOCKER}
+    url: ${PERSONAL_SERVICE_URL_DOCKER:}
 
 ---
 # =============================================================================

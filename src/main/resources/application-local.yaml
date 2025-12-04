@@ -1,0 +1,17 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Configure one of the following based on your .NET issuer setup:
+          # Option 1: If .NET backend exposes JWKS endpoint:
+          jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8091/.well-known/jwks.json}
+          # Option 2: If only have issuer URI (OpenID Connect discovery):
+          # issuer-uri: ${JWT_ISSUER_URI:http://localhost:8091}
+          # Note: Comment out jwk-set-uri if using issuer-uri instead
+
+# Example CORS if needed
+# cors:
+#   allowed-origins: "http://localhost:3000"
+#   allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+#   allowed-headers: "Authorization,Content-Type"

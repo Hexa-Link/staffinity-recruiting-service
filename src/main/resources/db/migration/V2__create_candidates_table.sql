@@ -1,15 +1,20 @@
 CREATE TABLE candidates (
-    id BIGSERIAL PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone_number VARCHAR(50),
-    resume_url VARCHAR(500), -- URL to the resume file
-    status VARCHAR(50) NOT NULL, -- e.g.: APPLIED, INTERVIEWING, HIRED, REJECTED
-    vacancy_id BIGINT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id UUID PRIMARY KEY,
+    vacancy_id UUID NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255),
+    resume_url VARCHAR(500),
+    linkedin_url VARCHAR(500),
+    portfolio_url VARCHAR(500),
+    application_status VARCHAR(50) NOT NULL,
+    source VARCHAR(255),
+    rejection_reason TEXT,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
     CONSTRAINT fk_vacancy
         FOREIGN KEY (vacancy_id)
             REFERENCES vacancies (id)
-            ON DELETE CASCADE -- If the vacancy is deleted, the candidates are deleted (optional)
+            ON DELETE CASCADE
 );

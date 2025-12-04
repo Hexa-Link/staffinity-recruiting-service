@@ -13,6 +13,7 @@ public interface VacancyMapper {
 
     Vacancy toDomain(VacancyEntity entity);
 
+    @Mapping(target = "id", expression = "java(domain.getId() != null ? domain.getId() : java.util.UUID.randomUUID())")
     VacancyEntity toEntity(Vacancy domain);
 
     @Mapping(target = "id", ignore = true)
