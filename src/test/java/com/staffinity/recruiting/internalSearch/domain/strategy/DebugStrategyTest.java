@@ -10,7 +10,8 @@ import java.util.UUID;
 
 public class DebugStrategyTest {
     public static void main(String[] args) {
-        SkillBasedMatchingStrategy strategy = new SkillBasedMatchingStrategy();
+        com.staffinity.recruiting.internalSearch.domain.service.KeywordExtractionService keywordService = new com.staffinity.recruiting.internalSearch.domain.service.KeywordExtractionService();
+        SkillBasedMatchingStrategy strategy = new SkillBasedMatchingStrategy(keywordService);
 
         // Create mid-level employee with 3 years experience
         Employee midEmployee = new Employee(
@@ -31,8 +32,7 @@ public class DebugStrategyTest {
                 UUID.randomUUID(), // Access level (not null means has access)
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
-                false
-        );
+                false);
 
         // Mid-level vacancy
         Vacancy midVacancy = new Vacancy(
@@ -49,15 +49,15 @@ public class DebugStrategyTest {
                 new BigDecimal("60000"),
                 new BigDecimal("120000"),
                 "USD",
-                null
-        );
+                null);
 
         int score = strategy.calculateMatchScore(midVacancy, midEmployee);
         System.out.println("Score: " + score);
         System.out.println("Expected: 100");
-        System.out.println("Seniority match: " + (midVacancy.getSeniority() != null && midEmployee.getAccessLevelId() != null));
+        System.out.println(
+                "Seniority match: " + (midVacancy.getSeniority() != null && midEmployee.getAccessLevelId() != null));
         System.out.println("Location match (remote): " + midVacancy.isRemoteAllowed());
-        System.out.println("Experience years: " + java.time.Period.between(midEmployee.getHireDate(), LocalDate.now()).getYears());
+        System.out.println(
+                "Experience years: " + java.time.Period.between(midEmployee.getHireDate(), LocalDate.now()).getYears());
     }
 }
-

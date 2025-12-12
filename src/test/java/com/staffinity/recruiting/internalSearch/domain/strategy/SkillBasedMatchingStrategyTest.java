@@ -21,7 +21,8 @@ class SkillBasedMatchingStrategyTest {
 
     @BeforeEach
     void setUp() {
-        strategy = new SkillBasedMatchingStrategy();
+        com.staffinity.recruiting.internalSearch.domain.service.KeywordExtractionService keywordService = new com.staffinity.recruiting.internalSearch.domain.service.KeywordExtractionService();
+        strategy = new SkillBasedMatchingStrategy(keywordService);
         sharedHeadquartersId = UUID.randomUUID();
     }
 
@@ -32,8 +33,7 @@ class SkillBasedMatchingStrategyTest {
         Employee seniorEmployee = createEmployee(
                 "Senior Developer John",
                 LocalDate.of(2013, 1, 1), // 10+ years experience
-                sharedHeadquartersId
-        );
+                sharedHeadquartersId);
 
         // Senior vacancy, remote allowed
         Vacancy seniorVacancy = createVacancy("Senior Java Developer", "Senior", true);
@@ -41,7 +41,8 @@ class SkillBasedMatchingStrategyTest {
         // When
         int score = strategy.calculateMatchScore(seniorVacancy, seniorEmployee);
 
-        // Then - Should get all points: 40 (seniority) + 30 (location/remote) + 30 (experience)
+        // Then - Should get all points: 40 (seniority) + 30 (location/remote) + 30
+        // (experience)
         assertThat(score).isEqualTo(100);
     }
 
@@ -52,8 +53,7 @@ class SkillBasedMatchingStrategyTest {
         Employee midEmployee = createEmployee(
                 "Mid Developer Jane",
                 LocalDate.of(2020, 6, 1), // 3-4 years experience
-                sharedHeadquartersId
-        );
+                sharedHeadquartersId);
 
         // Mid-level vacancy
         Vacancy midVacancy = createVacancy("Mid-Level Backend Developer", "Mid", true);
@@ -72,8 +72,7 @@ class SkillBasedMatchingStrategyTest {
         Employee juniorEmployee = createEmployee(
                 "Junior Dev Bob",
                 LocalDate.of(2022, 1, 1), // 1-2 years experience
-                sharedHeadquartersId
-        );
+                sharedHeadquartersId);
 
         // Senior vacancy - seniority doesn't match but location and some criteria do
         Vacancy seniorVacancy = createVacancy("Senior Developer", "Senior", true);
@@ -81,7 +80,8 @@ class SkillBasedMatchingStrategyTest {
         // When
         int score = strategy.calculateMatchScore(seniorVacancy, juniorEmployee);
 
-        // Then - Should get partial points (location matches, but not seniority/experience for senior)
+        // Then - Should get partial points (location matches, but not
+        // seniority/experience for senior)
         assertThat(score).isLessThan(100);
         assertThat(score).isGreaterThanOrEqualTo(0);
     }
@@ -108,8 +108,7 @@ class SkillBasedMatchingStrategyTest {
                 null, // No access level
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
-                false
-        );
+                false);
 
         Vacancy vacancy = createVacancy("Senior Developer", "Senior", false);
 
@@ -157,8 +156,7 @@ class SkillBasedMatchingStrategyTest {
         Employee juniorEmployee = createEmployee(
                 "Junior Dev Alice",
                 LocalDate.of(2022, 6, 1), // ~1.5 years
-                sharedHeadquartersId
-        );
+                sharedHeadquartersId);
 
         Vacancy juniorVacancy = createVacancy("Junior Developer", "Junior", true);
 
@@ -209,8 +207,7 @@ class SkillBasedMatchingStrategyTest {
                 new BigDecimal("60000"),
                 new BigDecimal("100000"),
                 "USD",
-                null
-        );
+                null);
 
         // When
         int score = strategy.calculateMatchScore(vacancyWithoutSeniority, employee);
@@ -241,8 +238,7 @@ class SkillBasedMatchingStrategyTest {
                 UUID.randomUUID(), // Access level (not null means has access)
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
-                false
-        );
+                false);
     }
 
     private Vacancy createVacancy(String title, String seniority, boolean remoteAllowed) {
@@ -260,8 +256,6 @@ class SkillBasedMatchingStrategyTest {
                 new BigDecimal("60000"),
                 new BigDecimal("120000"),
                 "USD",
-                null
-        );
+                null);
     }
 }
-

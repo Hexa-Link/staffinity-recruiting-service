@@ -8,7 +8,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 /**
- * Skill-based matching strategy that calculates employee-vacancy match scores based on:
+ * Skill-based matching strategy that calculates employee-vacancy match scores
+ * based on:
  * - Seniority alignment (40 points)
  * - Location compatibility (30 points)
  * - Experience tenure (30 points)
@@ -16,28 +17,53 @@ import java.time.Period;
 @Component
 public class SkillBasedMatchingStrategy implements EmployeeMatchingStrategy {
 
-    private static final int SENIORITY_WEIGHT = 40;
-    private static final int LOCATION_WEIGHT = 30;
-    private static final int EXPERIENCE_WEIGHT = 30;
-    private static final int MIN_MATCHING_SCORE = 50;
+    private static final int SKILL_WEIGHT = 40;
+    private static final int SENIORITY_WEIGHT = 30;
+    private static final int EXPERIENCE_WEIGHT = 20;
+    private static final int LOCATION_WEIGHT = 10;
+    private static final int MIN_MATCHING_SCORE = 30; // Lower threshold to show more "potential" matches
+
+    private final com.staffinity.recruiting.internalSearch.domain.service.KeywordExtractionService keywordService;
+
+    public SkillBasedMatchingStrategy(
+            com.staffinity.recruiting.internalSearch.domain.service.KeywordExtractionService keywordService) {
+        this.keywordService = keywordService;
+    }
 
     @Override
     public int calculateMatchScore(Vacancy vacancy, Employee employee) {
         int score = 0;
 
-        // Seniority matching (40 points)
+        // 1. Semantic Skill Matching (40 points)
+        // Extract required skills from vacancy description/requirements
+        java.util.Set<String> requiredSkills = keywordService
+                .extractKeywords(vacancy.getRequirements() + " " + vacancy.getDescription());
+        java.util.Set<String> employeeSkills = employee.getInferredSkills();
+
+        if (!requiredSkills.isEmpty()) {
+            long matches = requiredSkills.stream().filter(employeeSkills::contains).count();
+            // Calculate percentage of coverage
+            double coverage = (double) matches / requiredSkills.size();
+            // Cap at 1.0
+            if (coverage > 1.0)
+                coverage = 1.0;
+
+            score += (int) (coverage * SKILL_WEIGHT);
+        }
+
+        // 2. Seniority matching (30 points)
         if (matchesSeniority(vacancy, employee)) {
             score += SENIORITY_WEIGHT;
         }
 
-        // Location/remote compatibility (30 points)
-        if (matchesLocation(vacancy, employee)) {
-            score += LOCATION_WEIGHT;
-        }
-
-        // Experience level based on tenure (30 points)
+        // 3. Experience level based on tenure (20 points)
         if (matchesExperienceLevel(vacancy, employee)) {
             score += EXPERIENCE_WEIGHT;
+        }
+
+        // 4. Location/remote compatibility (10 points)
+        if (matchesLocation(vacancy, employee)) {
+            score += LOCATION_WEIGHT;
         }
 
         return score;
