@@ -5,8 +5,8 @@ FROM gradle:8.5-jdk17-alpine AS build
 # Set the working directory
 WORKDIR /app
 
-# Copy the build.gradle.kts and settings.gradle.kts to leverage Docker layer caching
-COPY build.gradle.kts settings.gradle.kts ./
+# Copy the build.gradle and settings.gradle to leverage Docker layer caching
+COPY build.gradle settings.gradle ./
 
 # Download dependencies
 # The --build-cache is a Gradle optimization
@@ -30,7 +30,7 @@ WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 
 # Expose the port the application will run on
-EXPOSE 080
+EXPOSE 8080
 
 # The command to run the application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
