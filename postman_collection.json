@@ -1,0 +1,192 @@
+{
+    "info": {
+        "_postman_id": "a1b2c3d4-e5f6-7890-1234-56789abcdef0",
+        "name": "Staffinity Recruiting Service",
+        "description": "API collection for the Recruiting Microservice",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Candidates",
+            "item": [
+                {
+                    "name": "Create Candidate",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"vacancyId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"resumeUrl\": \"https://example.com/resume.pdf\",\n  \"linkedinUrl\": \"https://linkedin.com/in/johndoe\",\n  \"source\": \"LinkedIn\",\n  \"applicationStatus\": \"APPLIED\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/candidates",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "candidates"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Candidates",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/candidates",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "candidates"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Candidate",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@updated.com\",\n  \"applicationStatus\": \"INTERVIEWING\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/candidates/{{candidate_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "candidates",
+                                "{{candidate_id}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Vacancies",
+            "item": [
+                {
+                    "name": "Create Vacancy",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Senior Java Developer\",\n  \"description\": \"We are looking for an expert in Spring Boot.\",\n  \"requirements\": \"Java 17, Spring Boot 3, Kubernetes, AWS\",\n  \"location\": \"New York\",\n  \"remoteAllowed\": true,\n  \"seniority\": \"Senior\",\n  \"salaryMin\": 120000,\n  \"salaryMax\": 160000,\n  \"currency\": \"USD\",\n  \"hiringManagerId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/vacancies",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vacancies"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Vacancies",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/vacancies",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vacancies"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Recruiting (Internal Search)",
+            "item": [
+                {
+                    "name": "Internal Search (All)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/recruiting/internal-search",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "recruiting",
+                                "internal-search"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Internal Search (By Vacancy)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/recruiting/internal-search/{{vacancy_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "recruiting",
+                                "internal-search",
+                                "{{vacancy_id}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://161.35.61.170:8080",
+            "type": "string"
+        },
+        {
+            "key": "candidate_id",
+            "value": "uuid-here",
+            "type": "string"
+        },
+        {
+            "key": "vacancy_id",
+            "value": "uuid-here",
+            "type": "string"
+        }
+    ]
+}
