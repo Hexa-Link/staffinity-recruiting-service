@@ -75,3 +75,7 @@ tasks.named('test') {
 		showStackTraces true
 	}
 }
+
+bootJar {
+	mainClass = 'com.staffinity.recruiting.RecruitingApplication'
+}
