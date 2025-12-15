@@ -52,7 +52,7 @@ management:
 # External Services Configuration
 external-services:
   personal-service:
-    url: ${PERSONAL_SERVICE_URL}
+    url: ${PERSONAL_SERVICE_URL:http://161.35.61.170:8081}
     timeout: ${PERSONAL_SERVICE_TIMEOUT:5000}
     circuit-breaker:
       failure-rate-threshold: 50
