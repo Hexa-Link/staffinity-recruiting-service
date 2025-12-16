@@ -8,7 +8,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 /**
- * Skill-based matching strategy that calculates employee-vacancy match scores based on:
+ * Skill-based matching strategy that calculates employee-vacancy match scores
+ * based on:
  * - Seniority alignment (40 points)
  * - Location compatibility (30 points)
  * - Experience tenure (30 points)
@@ -54,7 +55,7 @@ public class SkillBasedMatchingStrategy implements EmployeeMatchingStrategy {
      */
     private boolean matchesSeniority(Vacancy vacancy, Employee employee) {
         if (vacancy.getSeniority() == null || employee.getAccessLevelId() == null) {
-            return false;
+            return true; // leniency
         }
 
         String seniority = vacancy.getSeniority().toLowerCase();
@@ -88,6 +89,8 @@ public class SkillBasedMatchingStrategy implements EmployeeMatchingStrategy {
 
         // If not remote, check if employee has headquarters (location) info
         // In real system, you'd compare actual locations
+        if (employee.getHeadquartersId() == null)
+            return true; // lenient
         return employee.getHeadquartersId() != null;
     }
 
@@ -97,7 +100,7 @@ public class SkillBasedMatchingStrategy implements EmployeeMatchingStrategy {
      */
     private boolean matchesExperienceLevel(Vacancy vacancy, Employee employee) {
         if (vacancy.getSeniority() == null || employee.getHireDate() == null) {
-            return false;
+            return true; // leniency
         }
 
         int yearsOfExperience = calculateYearsOfExperience(employee);

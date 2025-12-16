@@ -17,7 +17,8 @@ public class ListVacanciesService implements ListVacanciesUseCase {
 
     @Override
     public List<Vacancy> listVacancies() {
-        return vacancyRepository.findAll();
+        return vacancyRepository.findAll().stream()
+                .filter(v -> "OPEN".equals(v.getStatus()))
+                .toList();
     }
 }
-
