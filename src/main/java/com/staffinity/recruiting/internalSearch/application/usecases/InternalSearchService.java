@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class InternalSearchService implements InternalSearchUseCase {
@@ -29,10 +28,10 @@ public class InternalSearchService implements InternalSearchUseCase {
     private final ListCandidatesService listCandidatesService;
 
     public InternalSearchService(ListVacanciesUseCase listVacanciesUseCase,
-                                EmployeeClient employeeClient,
-                                EmployeeMatchingStrategy matchingStrategy,
-                                CandidateMatchingStrategy candidateMatchingStrategy,
-                                ListCandidatesService listCandidatesService) {
+            EmployeeClient employeeClient,
+            EmployeeMatchingStrategy matchingStrategy,
+            CandidateMatchingStrategy candidateMatchingStrategy,
+            ListCandidatesService listCandidatesService) {
         this.listVacanciesUseCase = listVacanciesUseCase;
         this.employeeClient = employeeClient;
         this.matchingStrategy = matchingStrategy;
@@ -86,37 +85,59 @@ public class InternalSearchService implements InternalSearchUseCase {
     }
 
     @Override
-    public List<com.staffinity.recruiting.internalSearch.application.dto.InternalSearchResponse.MatchItemDto> searchInternalEmployees() {
+    public List<InternalSearchResponse> searchInternalEmployees() {
         List<Vacancy> vacancies = listVacanciesUseCase.listVacancies();
-        List<com.staffinity.recruiting.internalSearch.application.dto.InternalSearchResponse.MatchItemDto> results = new ArrayList<>();
+        List<InternalSearchResponse> results = new ArrayList<>();
 
         List<Employee> employees = employeeClient.getEmployees();
         List<Candidate> candidates = listCandidatesService.listCandidates();
 
         for (Vacancy vacancy : vacancies) {
-            // employees
+            List<InternalSearchResponse.MatchItem> vacancyMatches = new ArrayList<>();
+
+            // 1. Employees
             if (employees != null) {
                 for (Employee employee : employees) {
                     int score = matchingStrategy.calculateMatchScore(vacancy, employee);
                     if (score >= matchingStrategy.getMinMatchingScore()) {
-                        results.add(new com.staffinity.recruiting.internalSearch.application.dto.InternalSearchResponse.MatchItemDto(vacancy, employee, score));
+                        vacancyMatches.add(new InternalSearchResponse.MatchItem(employee, score));
                     }
                 }
             }
-            // candidates linked to vacancy
+
+            // 2. Candidates
             if (candidates != null) {
                 for (Candidate c : candidates) {
-                    if (vacancy.getId().equals(c.getVacancyId())) {
+                    // Only candidates linked to this vacancy? Or all candidates?
+                    // Previous logic checked: vacancy.getId().equals(c.getVacancyId())
+                    if (c.getVacancyId() != null && c.getVacancyId().equals(vacancy.getId())) {
                         int score = candidateMatchingStrategy.calculateMatchScore(vacancy, c);
                         if (score >= candidateMatchingStrategy.getMinMatchingScore()) {
-                            results.add(new com.staffinity.recruiting.internalSearch.application.dto.InternalSearchResponse.MatchItemDto(vacancy, c, score));
+                            vacancyMatches.add(new InternalSearchResponse.MatchItem(c, score));
                         }
                     }
                 }
             }
+
+            // If we found matches (or even if not, depending on requirement. Let's include
+            // if matches exist)
+            // But usually search results include the vacancy even if no matches?
+            // The previous code only added if score >= min.
+            // Let's emulate "search matches": only return if there ARE matches?
+            // "InternalSearchResponse" implies the response IS the search result for a
+            // vacancy.
+            // The single-vacancy endpoint returns 404 if no matches.
+            // So for the list, we likely only want vacancies with matches.
+            if (!vacancyMatches.isEmpty()) {
+                vacancyMatches
+                        .sort(Comparator.comparingInt(InternalSearchResponse.MatchItem::getMatchScore).reversed());
+                results.add(new InternalSearchResponse(vacancy, vacancyMatches));
+            }
         }
 
-        results.sort(Comparator.comparingInt(com.staffinity.recruiting.internalSearch.application.dto.InternalSearchResponse.MatchItemDto::getMatchScore).reversed());
+        // Sort overall results? Maybe by number of matches or vacancy title?
+        // Current requirement doesn't specify sort order of vacancies, just matches
+        // within.
         return results;
     }
 }

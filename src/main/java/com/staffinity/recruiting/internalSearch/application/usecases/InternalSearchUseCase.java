@@ -7,5 +7,6 @@ import java.util.UUID;
 
 public interface InternalSearchUseCase {
     InternalSearchResponse searchInternalEmployees(UUID vacancyId);
-    List<InternalSearchResponse.MatchItemDto> searchInternalEmployees();
+
+    List<InternalSearchResponse> searchInternalEmployees();
 }

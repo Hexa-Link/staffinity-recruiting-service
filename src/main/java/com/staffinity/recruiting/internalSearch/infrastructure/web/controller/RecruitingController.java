@@ -24,8 +24,8 @@ public class RecruitingController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InternalSearchResponse.MatchItemDto>> internalSearchAll() {
-        List<InternalSearchResponse.MatchItemDto> results = internalSearchUseCase.searchInternalEmployees();
+    public ResponseEntity<List<InternalSearchResponse>> internalSearchAll() {
+        List<InternalSearchResponse> results = internalSearchUseCase.searchInternalEmployees();
         return ResponseEntity.ok(results);
     }
 
